@@ -26,6 +26,20 @@
     header img:hover { transform:scale(1.05); }
     header h1 { font-size:1.7rem; margin-left:15px; font-weight:700; letter-spacing:1px; }
 
+    /* Hamburger button */
+    .hamburger {
+      display:none;
+      flex-direction: column;
+      cursor: pointer;
+      gap:5px;
+    }
+    .hamburger div {
+      width:25px;
+      height:3px;
+      background:#fff;
+      transition: all 0.3s;
+    }
+
     /* Sidebar (Desktop) */
     .sidebar {
       background: linear-gradient(180deg,#0d1b2a,#1b3a66);
@@ -60,13 +74,19 @@
     /* Mobile menu */
     .mobile-menu {
       display:none;
-      flex-wrap:wrap;
+      flex-direction: column;
       gap:10px;
-      padding:15px 20px;
+      padding:10px 20px;
       background: linear-gradient(90deg,#0d1b2a,#1b3a66);
+      position: absolute;
+      top:65px;
+      left:0;
+      right:0;
+      border-radius:0 0 10px 10px;
+      display: none;
+      z-index: 99;
     }
     .mobile-menu button {
-      flex:1 1 45%;
       background:#1b3a66;
       color:#fff;
       border:none;
@@ -101,7 +121,7 @@
     /* Responsive */
     @media screen and (max-width:768px) {
       .sidebar { display:none; }
-      .mobile-menu { display:flex; }
+      .hamburger { display:flex; }
       .content { margin-left:0; padding:10px; height:auto; }
       iframe { height:80vh; }
     }
@@ -110,8 +130,15 @@
 <body>
 
 <header>
-  <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo" onclick="loadPage('home.html', activeButton)">
-  <h1>Sentinel-X EduTools</h1>
+  <div style="display:flex; align-items:center;">
+    <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo" onclick="loadPage('home.html', activeButton)">
+    <h1 style="margin-left:10px;">Sentinel-X EduTools</h1>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </header>
 
 <!-- Sidebar -->
@@ -125,7 +152,7 @@
 </div>
 
 <!-- Mobile Menu -->
-<div class="mobile-menu">
+<div class="mobile-menu" id="mobileMenu">
   <button onclick="loadPage('home.html', this)">🏠 Home</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Math</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Combined-Science-EduCourse/', this)">🔬 Science</button>
@@ -140,6 +167,7 @@
 
 <script>
   let activeButton = null;
+  const mobileMenu = document.getElementById('mobileMenu');
 
   function loadPage(url, btn) {
     const iframe = document.getElementById('courseFrame');
@@ -149,6 +177,17 @@
     if(activeButton) activeButton.classList.remove('active');
     activeButton = btn;
     activeButton.classList.add('active');
+
+    // Close mobile menu after selection
+    if(window.innerWidth <= 768) mobileMenu.style.display = 'none';
+  }
+
+  function toggleMenu() {
+    if(mobileMenu.style.display === 'flex') {
+      mobileMenu.style.display = 'none';
+    } else {
+      mobileMenu.style.display = 'flex';
+    }
   }
 
   // Load home on start
