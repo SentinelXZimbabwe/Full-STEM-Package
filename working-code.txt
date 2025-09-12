@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel-X Academy EduTools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #f0f2f5; color: #333; }
+
+    /* Header */
+    header {
+      background: linear-gradient(90deg, #0d1b2a, #1b3a66);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    header img { height: 55px; transition: transform 0.3s; }
+    header img:hover { transform: scale(1.05); }
+    header h1 { font-size: 1.7rem; margin-left: 15px; font-weight: 700; letter-spacing: 1px; }
+
+    /* Sidebar for desktop */
+    .sidebar {
+      background: linear-gradient(180deg, #0d1b2a, #1b3a66);
+      color: #fff;
+      width: 260px;
+      min-height: 100vh;
+      padding-top: 25px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+      transition: width 0.3s;
+    }
+    .sidebar button {
+      background: transparent;
+      color: #fff;
+      border: none;
+      text-align: left;
+      padding: 15px 25px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar button:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateX(5px);
+    }
+
+    /* Top menu for mobile */
+    .mobile-menu {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 15px 20px;
+      background: linear-gradient(90deg, #0d1b2a, #1b3a66);
+    }
+    .mobile-menu button {
+      flex: 1 1 45%;
+      background: #1b3a66;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .mobile-menu button:hover {
+      background: #2a5aac;
+      transform: translateY(-2px);
+    }
+
+    /* Main content iframe */
+    .content {
+      margin-left: 260px;
+      padding: 25px;
+      height: 100vh;
+      background: #f0f2f5;
+      transition: margin-left 0.3s;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    /* Active button highlight */
+    .active {
+      background: rgba(255,255,255,0.2) !important;
+      font-weight: 700;
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 768px) {
+      .sidebar { display: none; }
+      .mobile-menu { display: flex; }
+      .content { margin-left: 0; padding: 10px; height: auto; }
+      iframe { height: 80vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo">
+    <h1>Sentinel-X EduTools</h1>
+  </header>
+
+  <!-- Sidebar (Desktop) -->
+  <div class="sidebar">
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Mathematics</button>
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Combined-Science-EduCourse/', this)">🔬 Science</button>
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/HTML-and-CSS-course/', this)">💻 HTML & CSS</button>
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/MySQL-Database-Academy/', this)">🗄️ Databases</button>
+    <button onclick="loadPage('https://edgebotmkii.pythonanywhere.com/', this)">🤖 Robotics</button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu">
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Math</button>
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Combined-Science-EduCourse/', this)">🔬 Science</button>
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/HTML-and-CSS-course/', this)">💻 HTML & CSS</button>
+    <button onclick="loadPage('https://sentinelxzimbabwe.github.io/MySQL-Database-Academy/', this)">🗄️ Databases</button>
+    <button onclick="loadPage('https://edgebotmkii.pythonanywhere.com/', this)">🤖 Robotics</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <iframe id="courseFrame" src=""></iframe>
+  </div>
+
+  <script>
+    let activeButton = null;
+    function loadPage(url, btn) {
+      document.getElementById('courseFrame').src = url;
+
+      // Highlight active button
+      if(activeButton) activeButton.classList.remove('active');
+      activeButton = btn;
+      activeButton.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
