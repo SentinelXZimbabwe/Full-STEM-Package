@@ -25,6 +25,8 @@
   header img { height:55px; transition: transform 0.3s; cursor:pointer; }
   header img:hover { transform:scale(1.05); }
   header h1 { font-size:1.7rem; margin-left:15px; font-weight:700; letter-spacing:1px; }
+  header .user-info { font-size:1rem; font-weight:500; margin-left:20px; }
+  header #logoutBtn { padding:8px 15px; border:none; border-radius:8px; background:#2a5aac; color:#fff; cursor:pointer; display:none; }
 
   /* Sidebar (Desktop) */
   .sidebar {
@@ -101,20 +103,21 @@
   /* Login overlay */
   .login-overlay {
     position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center;
+    background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center;
     z-index:9999;
   }
   .login-box {
-    background:#fff; padding:40px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    width:350px;
+    background:#fff; padding:50px 40px; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.3);
+    width:360px; max-width:90%;
+    text-align:center;
   }
-  .login-box h1 { text-align:center; margin-bottom:30px; color:#1b3a66; }
-  .login-box input { width:100%; padding:12px 15px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:1rem; }
-  .login-box button { width:100%; padding:12px; background:#1b3a66; color:#fff; border:none; border-radius:8px; font-size:1rem; cursor:pointer; transition: all 0.3s; }
+  .login-box h1 { margin-bottom:30px; color:#1b3a66; font-size:1.8rem; }
+  .login-box input { width:100%; padding:14px 18px; margin-bottom:20px; border:1px solid #ccc; border-radius:10px; font-size:1rem; transition: all 0.3s; }
+  .login-box input:focus { border-color:#1b3a66; outline:none; }
+  .login-box button { width:100%; padding:14px; background:#1b3a66; color:#fff; border:none; border-radius:10px; font-size:1.1rem; cursor:pointer; transition: all 0.3s; }
   .login-box button:hover { background:#2a5aac; }
-  .error { color:red; font-size:0.9rem; text-align:center; margin-bottom:10px; display:none; }
-  .demo-accounts { font-size:0.85rem; color:#555; margin-top:10px; }
-  
+  .error { color:red; font-size:0.9rem; margin-bottom:15px; display:none; }
+
   /* Responsive */
   @media screen and (max-width:768px) {
     .sidebar { display:none; }
@@ -127,9 +130,12 @@
 <body>
 
 <header>
-  <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo" onclick="resetHome()">
-  <h1>Sentinel-X EduTools</h1>
-  <button id="logoutBtn" style="display:none; padding:8px 15px; border:none; border-radius:8px; background:#2a5aac; color:#fff; cursor:pointer;">Logout</button>
+  <div style="display:flex; align-items:center;">
+    <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo" onclick="resetHome()">
+    <h1>Sentinel-X EduTools</h1>
+    <span class="user-info" id="userInfo"></span>
+  </div>
+  <button id="logoutBtn">Logout</button>
 </header>
 
 <!-- Sidebar -->
@@ -158,27 +164,22 @@
 <!-- Login Overlay -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <h1>Login to EduTools</h1>
+    <h1>Welcome to EduTools</h1>
     <div class="error" id="errorMsg">Invalid username or password!</div>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     <button onclick="login()">Login</button>
-    <div class="demo-accounts">
-      <p><strong>Demo Accounts:</strong></p>
-      <p>user1 / pass1</p>
-      <p>user2 / pass2</p>
-      <p>user3 / pass3</p>
-    </div>
   </div>
 </div>
 
 <script>
   let activeButton = null;
 
-  const accounts = [
-    { username: 'user1', password: 'pass1' },
-    { username: 'user2', password: 'pass2' },
-    { username: 'user3', password: 'pass3' }
+  // Users with ID
+  const users = [
+    { id: 'U001', username: 'user1', password: 'pass1', fullName: 'John Doe' },
+    { id: 'U002', username: 'user2', password: 'pass2', fullName: 'Jane Smith' },
+    { id: 'U003', username: 'user3', password: 'pass3', fullName: 'Alice Brown' }
   ];
 
   function login() {
@@ -186,19 +187,19 @@
     const password = document.getElementById('password').value.trim();
     const errorMsg = document.getElementById('errorMsg');
 
-    const user = accounts.find(acc => acc.username === username && acc.password === password);
+    const user = users.find(u => u.username === username && u.password === password);
 
     if(user) {
-      sessionStorage.setItem('loggedInUser', username);
+      sessionStorage.setItem('loggedInUser', JSON.stringify(user));
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('logoutBtn').style.display = 'inline-block';
+      document.getElementById('userInfo').textContent = `Logged in as: ${user.fullName} (${user.id})`;
       loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', document.querySelector('.sidebar button'));
     } else {
       errorMsg.style.display = 'block';
     }
   }
 
-  // Load page in iframe
   function loadPage(url, btn) {
     if(!sessionStorage.getItem('loggedInUser')) {
       alert("Please login first!");
@@ -207,30 +208,29 @@
     const iframe = document.getElementById('courseFrame');
     iframe.src = url;
 
-    // Highlight active button
     if(activeButton) activeButton.classList.remove('active');
     activeButton = btn;
     activeButton.classList.add('active');
   }
 
-  // Logout
   document.getElementById('logoutBtn').onclick = () => {
     sessionStorage.removeItem('loggedInUser');
     location.reload();
   }
 
-  // Reset home on logo click
   function resetHome() {
     if(sessionStorage.getItem('loggedInUser')) {
       loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', document.querySelector('.sidebar button'));
     }
   }
 
-  // Check login on page load
+  // On page load: check login
   window.onload = () => {
-    if(sessionStorage.getItem('loggedInUser')) {
+    const storedUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+    if(storedUser) {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('logoutBtn').style.display = 'inline-block';
+      document.getElementById('userInfo').textContent = `Logged in as: ${storedUser.fullName} (${storedUser.id})`;
       loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', document.querySelector('.sidebar button'));
     }
   }
