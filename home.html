@@ -141,6 +141,7 @@
 </head>
 <body>
 
+<!-- Login Overlay -->
 <div id="loginOverlay">
   <div id="loginBox">
     <h2>Login</h2>
@@ -164,8 +165,9 @@
   </div>
 </header>
 
+<!-- Sidebar -->
 <div class="sidebar">
-  <button onclick="loadPage('home.html', this)">🏠 Home</button>
+  <button onclick="loadPage('home', this)">🏠 Home</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Mathematics</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Combined-Science-EduCourse/', this)">🔬 Science</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/HTML-and-CSS-course/', this)">💻 HTML & CSS</button>
@@ -176,8 +178,9 @@
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/calculator/', this)">🧮 Calculator</button>
 </div>
 
+<!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
-  <button onclick="loadPage('home.html', this)">🏠 Home</button>
+  <button onclick="loadPage('home', this)">🏠 Home</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Math</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Combined-Science-EduCourse/', this)">🔬 Science</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/HTML-and-CSS-course/', this)">💻 HTML & CSS</button>
@@ -188,16 +191,17 @@
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/calculator/', this)">🧮 Calculator</button>
 </div>
 
+<!-- Main Content -->
 <div class="content">
   <iframe id="courseFrame" src=""></iframe>
 </div>
 
 <script>
 let activeButton = null;
-const mobileMenu = document.getElementById('mobileMenu');
 const loginOverlay = document.getElementById('loginOverlay');
 const errorMsg = document.getElementById('errorMsg');
 const userInfo = document.getElementById('userInfo');
+const mobileMenu = document.getElementById('mobileMenu');
 
 const users = [
   { username: "student1", password: "pass123", clientId: "C101" },
@@ -211,16 +215,13 @@ function login() {
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
   const user = users.find(u => u.username === username && u.password === password);
+  if(!user) return errorMsg.innerText = "Invalid username or password!";
 
-  if(user) {
-    currentUser = user;
-    loginOverlay.style.opacity = 0;
-    setTimeout(()=> loginOverlay.style.display = 'none', 300);
-    userInfo.innerHTML = `Logged in as: ${currentUser.username} | Client ID: ${currentUser.clientId} <button id="logoutBtn" onclick="logout()">Logout</button>`;
-    loadDefaultPage();
-  } else {
-    errorMsg.innerText = "Invalid username or password!";
-  }
+  currentUser = user;
+  loginOverlay.style.opacity = 0;
+  setTimeout(()=> loginOverlay.style.display = 'none', 300);
+  userInfo.innerHTML = `Logged in as: ${user.username} | Client ID: ${user.clientId} <button id="logoutBtn" onclick="logout()">Logout</button>`;
+  loadDefaultPage();
 }
 
 function logout() {
@@ -230,17 +231,21 @@ function logout() {
   document.getElementById('username').value = '';
   document.getElementById('password').value = '';
   userInfo.innerHTML = '';
-  const iframe = document.getElementById('courseFrame');
-  iframe.src = '';
+  document.getElementById('courseFrame').src = '';
+  if(activeButton) activeButton.classList.remove('active');
   activeButton = null;
 }
 
-function getCurrentUser() { return currentUser; }
-
 function loadPage(url, btn) {
-  if(!currentUser) return; // prevent loading if not logged in
+  if(!currentUser) return;
   const iframe = document.getElementById('courseFrame');
-  iframe.src = url;
+  if(url === 'home') {
+    iframe.srcdoc = `<h1 style="text-align:center; margin-top:50px;">Welcome, ${currentUser.username}!</h1>
+                     <p style="text-align:center;">Select a course from the menu to start learning.</p>`;
+  } else {
+    iframe.srcdoc = ''; // Clear previous home content
+    iframe.src = url;
+  }
 
   if(activeButton) activeButton.classList.remove('active');
   activeButton = btn;
@@ -251,14 +256,14 @@ function loadPage(url, btn) {
 
 function loadDefaultPage() {
   const homeBtn = document.querySelector('.sidebar button:first-child') || document.querySelector('.mobile-menu button:first-child');
-  loadPage('home.html', homeBtn);
+  loadPage('home', homeBtn);
 }
 
 function toggleMenu() {
   mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
 }
 
-window.onload = () => { loginOverlay.style.display = 'flex'; };
+window.onload = () => loginOverlay.style.display = 'flex';
 </script>
 
 </body>
