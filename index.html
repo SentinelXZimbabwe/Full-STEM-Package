@@ -9,46 +9,26 @@
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
   body { background:#f0f2f5; color:#333; }
 
-  /* Login Overlay (Homepage) */
+  /* Login Overlay */
   #loginOverlay {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    position:fixed; top:0; left:0; width:100%; height:100%;
     background:linear-gradient(135deg, #0d1b2a, #1b3a66);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:999;
-    color:#fff;
-    text-align:center;
+    display:flex; justify-content:center; align-items:center; z-index:999;
+    color:#fff; text-align:center;
   }
   #loginBox {
-    background:#fff;
-    color:#333;
-    padding:40px 30px;
-    border-radius:15px;
-    width:350px;
-    box-shadow:0 6px 25px rgba(0,0,0,0.3);
+    background:#fff; color:#333;
+    padding:40px 30px; border-radius:15px;
+    width:350px; box-shadow:0 6px 25px rgba(0,0,0,0.3);
   }
   #loginBox h2 { margin-bottom:15px; font-size:1.5rem; color:#0d1b2a; }
   #loginBox p { margin-bottom:20px; color:#333; }
   #loginBox input {
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    border-radius:8px;
-    border:1px solid #ccc;
+    width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc;
   }
   #loginBox button {
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    border:none;
-    background:#0d1b2a;
-    color:#fff;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
+    width:100%; padding:12px; margin-top:15px; border:none;
+    background:#0d1b2a; color:#fff; border-radius:8px; cursor:pointer; font-weight:600;
     transition:background 0.3s;
   }
   #loginBox button:hover { background:#1b3a66; }
@@ -57,16 +37,9 @@
   /* Header */
   header {
     background: linear-gradient(90deg,#0d1b2a,#1b3a66);
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:15px 30px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    position: sticky;
-    top:0;
-    z-index:100;
-    display:none; /* hidden until login */
+    color:#fff; display:flex; align-items:center; justify-content:space-between;
+    padding:15px 30px; box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    position: sticky; top:0; z-index:100; display:none;
   }
   header img { height:55px; cursor:pointer; transition:transform 0.3s; }
   header img:hover { transform:scale(1.05); }
@@ -75,81 +48,43 @@
   #logoutBtn { padding:5px 10px; background:#1b3a66; border:none; border-radius:6px; color:#fff; cursor:pointer; transition: background 0.3s; }
   #logoutBtn:hover { background:#2a5aac; }
 
+  /* Hamburger */
   .hamburger { display:none; flex-direction: column; cursor:pointer; gap:5px; }
   .hamburger div { width:25px; height:3px; background:#fff; transition: all 0.3s; }
 
   /* Sidebar */
   .sidebar {
     background: linear-gradient(180deg,#0d1b2a,#1b3a66);
-    color:#fff;
-    width:260px;
-    min-height:100vh;
-    padding-top:25px;
-    position:fixed;
-    left:0;
-    top:0;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    box-shadow:2px 0 15px rgba(0,0,0,0.05);
-    display:none; /* hidden until login */
+    color:#fff; width:260px; min-height:100vh; padding-top:25px;
+    position:fixed; left:0; top:0; display:flex; flex-direction:column;
+    gap:12px; box-shadow:2px 0 15px rgba(0,0,0,0.05); display:none;
   }
   .sidebar button {
-    background: transparent;
-    color:#fff;
-    border:none;
-    text-align:left;
-    padding:15px 25px;
-    font-size:1.05rem;
-    cursor:pointer;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    transition: all 0.3s;
+    background: transparent; color:#fff; border:none; text-align:left;
+    padding:15px 25px; font-size:1.05rem; cursor:pointer; border-radius:8px;
+    display:flex; align-items:center; gap:10px; transition: all 0.3s;
   }
   .sidebar button:hover { background:rgba(255,255,255,0.1); transform:translateX(5px); }
 
   /* Mobile Menu */
   .mobile-menu {
-    display:none; /* hidden until login */
-    flex-direction: column;
-    gap:10px;
-    padding:10px 20px;
+    display:none; flex-direction: column; gap:10px; padding:10px 20px;
     background: linear-gradient(90deg,#0d1b2a,#1b3a66);
-    position: absolute;
-    top:65px;
-    left:0;
-    right:0;
-    border-radius:0 0 10px 10px;
+    position: absolute; top:65px; left:0; right:0; border-radius:0 0 10px 10px;
     z-index: 99;
   }
   .mobile-menu button {
-    background:#1b3a66;
-    color:#fff;
-    border:none;
-    padding:12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:600;
+    background:#1b3a66; color:#fff; border:none; padding:12px;
+    border-radius:10px; cursor:pointer; font-weight:600;
     transition: background 0.3s, transform 0.2s;
   }
   .mobile-menu button:hover { background:#2a5aac; transform:translateY(-2px); }
 
   /* Main content */
   .content {
-    margin-left:260px;
-    padding:25px;
-    height:100vh;
-    display:none; /* hidden until login */
+    margin-left:260px; padding:25px; height:100vh; display:none;
   }
-  iframe {
-    width:100%;
-    height:100%;
-    border:none;
-    border-radius:15px;
-    box-shadow:0 6px 25px rgba(0,0,0,0.1);
-  }
+  iframe { width:100%; height:100%; border:none; border-radius:15px; box-shadow:0 6px 25px rgba(0,0,0,0.1); }
 
   .active { background: rgba(255,255,255,0.2) !important; font-weight:700; }
 
@@ -247,8 +182,6 @@ function login() {
 
   currentUser = user;
   loginOverlay.style.display = 'none';
-
-  // Show dashboard
   mainHeader.style.display = 'flex';
   mainSidebar.style.display = 'flex';
   mainContent.style.display = 'block';
@@ -263,12 +196,10 @@ function logout() {
   document.getElementById('username').value = '';
   document.getElementById('password').value = '';
   errorMsg.innerText = '';
-
   mainHeader.style.display = 'none';
   mainSidebar.style.display = 'none';
   mainContent.style.display = 'none';
   mobileMenu.style.display = 'none';
-
   document.getElementById('courseFrame').src = '';
   if(activeButton) activeButton.classList.remove('active');
   activeButton = null;
