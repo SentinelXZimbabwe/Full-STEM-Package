@@ -184,7 +184,7 @@ function login() {
   loginOverlay.style.display = 'none';
   mainHeader.style.display = 'flex';
   mainContent.style.display = 'block';
-  if(window.innerWidth > 768) mainSidebar.style.display = 'flex'; // desktop sidebar
+  if(window.innerWidth > 768) mainSidebar.style.display = 'flex';
 
   userInfo.innerHTML = `Logged in as: ${user.username} | Client ID: ${user.clientId} <button id="logoutBtn" onclick="logout()">Logout</button>`;
   loadDefaultPage();
@@ -209,12 +209,14 @@ function loadPage(url, btn) {
   if(!currentUser) return;
 
   const iframe = document.getElementById('courseFrame');
+
   if(url === 'home') {
     iframe.srcdoc = `<h1 style="text-align:center; margin-top:50px;">Welcome, ${currentUser.username}!</h1>
                      <p style="text-align:center;">Select a course from the menu to start learning.</p>`;
     iframe.src = '';
   } else {
-    iframe.srcdoc = '';
+    // Try loading URL in iframe; fallback if blocked
+    iframe.srcdoc = `<p style="text-align:center; margin-top:50px; color:red;">Loading ${url}...</p>`;
     iframe.src = url;
   }
 
