@@ -9,7 +9,6 @@
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
   body { background:#f0f2f5; color:#333; transition: all 0.3s; }
 
-  /* Header */
   header {
     background: linear-gradient(90deg,#0d1b2a,#1b3a66);
     color:#fff;
@@ -29,11 +28,9 @@
   #logoutBtn { padding:5px 10px; background:#1b3a66; border:none; border-radius:6px; color:#fff; cursor:pointer; transition: background 0.3s; }
   #logoutBtn:hover { background:#2a5aac; }
 
-  /* Hamburger button */
   .hamburger { display:none; flex-direction: column; cursor:pointer; gap:5px; }
   .hamburger div { width:25px; height:3px; background:#fff; transition: all 0.3s; }
 
-  /* Sidebar (Desktop) */
   .sidebar {
     background: linear-gradient(180deg,#0d1b2a,#1b3a66);
     color:#fff;
@@ -65,7 +62,6 @@
   }
   .sidebar button:hover { background:rgba(255,255,255,0.1); transform:translateX(5px); }
 
-  /* Mobile menu */
   .mobile-menu {
     display:none;
     flex-direction: column;
@@ -91,7 +87,6 @@
   }
   .mobile-menu button:hover { background:#2a5aac; transform:translateY(-2px); }
 
-  /* Main content iframe */
   .content {
     margin-left:260px;
     padding:25px;
@@ -107,10 +102,8 @@
     transition: all 0.3s;
   }
 
-  /* Active button highlight */
   .active { background: rgba(255,255,255,0.2) !important; font-weight:700; }
 
-  /* Login Overlay */
   #loginOverlay {
     position:fixed;
     top:0; left:0;
@@ -138,7 +131,6 @@
   #loginBox button:hover { background:#1b3a66; }
   #errorMsg { color:red; font-size:0.9rem; margin-top:5px; }
 
-  /* Responsive */
   @media screen and (max-width:768px) {
     .sidebar { display:none; }
     .hamburger { display:flex; }
@@ -149,7 +141,6 @@
 </head>
 <body>
 
-<!-- Login Overlay -->
 <div id="loginOverlay">
   <div id="loginBox">
     <h2>Login</h2>
@@ -162,7 +153,7 @@
 
 <header>
   <div style="display:flex; align-items:center;">
-    <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo" onclick="loadPage('home.html', activeButton)">
+    <img src="logo/main-logo.png" alt="Sentinel-X Academy Logo" onclick="loadDefaultPage()">
     <h1 style="margin-left:10px;">Sentinel-X EduTools</h1>
     <div id="userInfo"></div>
   </div>
@@ -173,7 +164,6 @@
   </div>
 </header>
 
-<!-- Sidebar -->
 <div class="sidebar">
   <button onclick="loadPage('home.html', this)">🏠 Home</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Mathematics</button>
@@ -186,7 +176,6 @@
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/calculator/', this)">🧮 Calculator</button>
 </div>
 
-<!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <button onclick="loadPage('home.html', this)">🏠 Home</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Math</button>
@@ -204,77 +193,73 @@
 </div>
 
 <script>
-  let activeButton = null;
-  const mobileMenu = document.getElementById('mobileMenu');
-  const loginOverlay = document.getElementById('loginOverlay');
-  const errorMsg = document.getElementById('errorMsg');
-  const userInfo = document.getElementById('userInfo');
+let activeButton = null;
+const mobileMenu = document.getElementById('mobileMenu');
+const loginOverlay = document.getElementById('loginOverlay');
+const errorMsg = document.getElementById('errorMsg');
+const userInfo = document.getElementById('userInfo');
 
-  // Hardcoded user database
-  const users = [
-    { username: "student1", password: "pass123", clientId: "C101" },
-    { username: "student2", password: "pass456", clientId: "C102" },
-    { username: "teacher1", password: "teach123", clientId: "T201" }
-  ];
+const users = [
+  { username: "student1", password: "pass123", clientId: "C101" },
+  { username: "student2", password: "pass456", clientId: "C102" },
+  { username: "teacher1", password: "teach123", clientId: "T201" }
+];
 
-  let currentUser = null;
+let currentUser = null;
 
-  function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const user = users.find(u => u.username === username && u.password === password);
+function login() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const user = users.find(u => u.username === username && u.password === password);
 
-    if(user) {
-      currentUser = user;
-      loginOverlay.style.opacity = 0;
-      setTimeout(()=>{ loginOverlay.style.display = 'none'; }, 300);
-      userInfo.innerHTML = `Logged in as: ${currentUser.username} | Client ID: ${currentUser.clientId} <button id="logoutBtn" onclick="logout()">Logout</button>`;
-      
-      // Load default home page
-      const homeBtn = document.querySelector('.sidebar button:first-child') || document.querySelector('.mobile-menu button:first-child');
-      loadPage('home.html', homeBtn);
-    } else {
-      errorMsg.innerText = "Invalid username or password!";
-    }
+  if(user) {
+    currentUser = user;
+    loginOverlay.style.opacity = 0;
+    setTimeout(()=> loginOverlay.style.display = 'none', 300);
+    userInfo.innerHTML = `Logged in as: ${currentUser.username} | Client ID: ${currentUser.clientId} <button id="logoutBtn" onclick="logout()">Logout</button>`;
+    loadDefaultPage();
+  } else {
+    errorMsg.innerText = "Invalid username or password!";
   }
+}
 
-  function logout() {
-    currentUser = null;
-    loginOverlay.style.display = 'flex';
-    loginOverlay.style.opacity = 1;
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    userInfo.innerHTML = '';
-    const iframe = document.getElementById('courseFrame');
-    iframe.src = '';
-  }
+function logout() {
+  currentUser = null;
+  loginOverlay.style.display = 'flex';
+  loginOverlay.style.opacity = 1;
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
+  userInfo.innerHTML = '';
+  const iframe = document.getElementById('courseFrame');
+  iframe.src = '';
+  activeButton = null;
+}
 
-  function getCurrentUser() {
-    return currentUser;
-  }
+function getCurrentUser() { return currentUser; }
 
-  function loadPage(url, btn) {
-    if(!currentUser) return; // prevent loading if not logged in
-    const iframe = document.getElementById('courseFrame');
-    iframe.src = url;
+function loadPage(url, btn) {
+  if(!currentUser) return; // prevent loading if not logged in
+  const iframe = document.getElementById('courseFrame');
+  iframe.src = url;
 
-    // Highlight active button
-    if(activeButton) activeButton.classList.remove('active');
-    activeButton = btn;
-    activeButton.classList.add('active');
+  if(activeButton) activeButton.classList.remove('active');
+  activeButton = btn;
+  activeButton.classList.add('active');
 
-    // Close mobile menu after selection
-    if(window.innerWidth <= 768) mobileMenu.style.display = 'none';
-  }
+  if(window.innerWidth <= 768) mobileMenu.style.display = 'none';
+}
 
-  function toggleMenu() {
-    if(mobileMenu.style.display === 'flex') mobileMenu.style.display = 'none';
-    else mobileMenu.style.display = 'flex';
-  }
+function loadDefaultPage() {
+  const homeBtn = document.querySelector('.sidebar button:first-child') || document.querySelector('.mobile-menu button:first-child');
+  loadPage('home.html', homeBtn);
+}
 
-  window.onload = () => {
-    loginOverlay.style.display = 'flex';
-  };
+function toggleMenu() {
+  mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+}
+
+window.onload = () => { loginOverlay.style.display = 'flex'; };
 </script>
+
 </body>
 </html>
