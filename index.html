@@ -125,7 +125,7 @@
   </div>
 </header>
 
-<!-- Sidebar -->
+<!-- Sidebar (Desktop) -->
 <div class="sidebar" id="mainSidebar">
   <button onclick="loadPage('home', this)">🏠 Home</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Mathematics</button>
@@ -138,10 +138,10 @@
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/calculator/', this)">🧮 Calculator</button>
 </div>
 
-<!-- Mobile Menu -->
+<!-- Mobile Hamburger Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <button onclick="loadPage('home', this)">🏠 Home</button>
-  <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Math</button>
+  <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Sentinel-X-Mathematics-Course/', this)">📐 Mathematics</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/Combined-Science-EduCourse/', this)">🔬 Science</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/HTML-and-CSS-course/', this)">💻 HTML & CSS</button>
   <button onclick="loadPage('https://sentinelxzimbabwe.github.io/MySQL-Database-Academy/', this)">🗄️ Databases</button>
@@ -183,8 +183,8 @@ function login() {
   currentUser = user;
   loginOverlay.style.display = 'none';
   mainHeader.style.display = 'flex';
-  mainSidebar.style.display = 'flex';
   mainContent.style.display = 'block';
+  if(window.innerWidth > 768) mainSidebar.style.display = 'flex'; // desktop sidebar
 
   userInfo.innerHTML = `Logged in as: ${user.username} | Client ID: ${user.clientId} <button id="logoutBtn" onclick="logout()">Logout</button>`;
   loadDefaultPage();
@@ -207,6 +207,7 @@ function logout() {
 
 function loadPage(url, btn) {
   if(!currentUser) return;
+
   const iframe = document.getElementById('courseFrame');
   if(url === 'home') {
     iframe.srcdoc = `<h1 style="text-align:center; margin-top:50px;">Welcome, ${currentUser.username}!</h1>
@@ -237,6 +238,5 @@ window.onload = () => {
   loginOverlay.style.display = 'flex';
 };
 </script>
-
 </body>
 </html>
